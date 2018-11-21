@@ -1,0 +1,3 @@
+providerFilter=com.qhbd.dubbo.filter.DBIDFilter
+exceptionFilter=com.qhbd.dubbo.filter.GlobalExceptionHandlerFilter
+consumerFilter=com.qhbd.dubbo.filter.ConsumerFilter
