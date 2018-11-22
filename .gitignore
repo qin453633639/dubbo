@@ -1,0 +1,10 @@
+# Intellij
+**/*.iml
+**/*.iml
+/out/
+# Eclipse Project files
+.classpath
+.project
+.settings/
+### Maven template  
+**/target/*
