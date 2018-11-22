@@ -6,17 +6,16 @@ BIN_DIR=`pwd`
 cd ..
 DEPLOY_DIR=`pwd`
 MAIN_CLASS=com.qhbd.sso.UserEsApplication
-SERVER_NAME=$DEPLOY_DIR
 # 获取 pid
 PIDS=`ps -ef | grep java | grep "$DEPLOY_DIR" |awk '{print $2}'`
 if [ -z "$PIDS" ]; then
-    echo "ERROR: The $SERVER_NAME does not started!"
+    echo "ERROR: The $MAIN_CLASS does not started!"
     exit 1
 fi
 
 
 # kill 线程
-echo -e "Stopping the $SERVER_NAME ...\c"
+echo -e "Stopping the $MAIN_CLASS ...\c"
 for PID in $PIDS ; do
     kill $PID > /dev/null 2>&1
 done

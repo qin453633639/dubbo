@@ -4,7 +4,7 @@
         通过<property>定义的值会被插入到logger上下文中。定义变量后，可以使“${}”来使用变量。 -->
     <property name="context_name" value="@project.name@" />
     <property name="app_name" value="@project.name@" />
-    <property name="log_dir" value="@logDir@" />
+    <property name="log_dir" value="@log_dir@" />
 
 
     <!-- 上下文名称：<contextName>, 每个logger都关联到logger上下文，

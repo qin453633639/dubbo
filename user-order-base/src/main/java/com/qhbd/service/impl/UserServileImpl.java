@@ -1,6 +1,7 @@
 package com.qhbd.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.alibaba.fastjson.JSON;
 import com.qhbd.entity.User;
 import com.qhbd.mapper.UserMapper;
 import com.qhbd.param.CommonParam;
@@ -23,6 +24,7 @@ public class UserServileImpl extends  BaseServiceImpl<UserMapper, User>  impleme
 
     @Override
     public ResultVo<List<Long>>   findOrderIdsByUserId(CommonParam<Long> entity) {
+        this.logger.debug("UserServileImpl.findOrderIdsByUserId param {}", JSON.toJSONString(entity));
         List<Long> list = new ArrayList<>();
         for(long i=0;i<10;i++){
             list.add(i);
@@ -30,6 +32,7 @@ public class UserServileImpl extends  BaseServiceImpl<UserMapper, User>  impleme
         if(list.size() == 10){
             throw new RuntimeException("aaaa");
         }
+        this.logger.debug("UserServileImpl.findOrderIdsByUserId response {}", JSON.toJSONString(list));
         return ResultVo.success(list);
     }
 }

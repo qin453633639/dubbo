@@ -23,11 +23,8 @@ public class SqliteSlotLoadBalance extends AbstractLoadBalance {
 	@Override
 	protected <T> Invoker<T> doSelect(List<Invoker<T>> invokers, URL url, Invocation invocation) {
 		try {
-
 			for (Invoker<T> invoker : invokers) {
-
 				return invoker;
-
 			}
 		} catch (Exception e) {
 			Logger.error("SqliteSlotLoadBalance.doSelect ",e);

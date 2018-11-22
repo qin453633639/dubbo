@@ -32,10 +32,6 @@ public class KDException  extends  RuntimeException{
         super(statusResult.getMsg());
     }
 
-    private KDException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
-
     public StatusResult getStatusResult() {
         return statusResult;
     }

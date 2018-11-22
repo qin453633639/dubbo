@@ -1,8 +1,9 @@
 package com.qhbd.config;
 
 import com.alibaba.dubbo.config.*;
+import com.qhbd.config.properties.*;
 import com.qhbd.response.ResultMsg;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,56 +16,29 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DubboConfiguration {
 
+    /**
+     * 服务降级，duboo自带的有点蠢，后面集成hytrix做降级
+     */
     private String mock = "return {" +
             "\"code\":\""+ ResultMsg.DUBBO_CONSUMER_ERROR.getCode()+"\"," +
             "\"msg\":\""+ ResultMsg.DUBBO_CONSUMER_ERROR.getMsg()+"\"" +
             "}";
 
-    //  app 配置
-    @Value("${dubboConfig.applicationConfig.appName}")
-    private String appName;
-    @Value("${dubboConfig.applicationConfig.owner}")
-    private String owner;
-    @Value("${dubboConfig.applicationConfig.organization}")
-    private String organization;
+    @Autowired
+    private ApplicationConfigProperties applicationConfigProperties;
 
-    //  zk 配置
-    @Value("${dubboConfig.registryConfig.zk}")
-    private String zk;
+    @Autowired
+    private RegistryConfigProperties registryConfigProperties;
 
-    //  provider 配置
-    @Value("${dubboConfig.providerConfig.server}")
-    private String server;
-    @Value("${dubboConfig.providerConfig.threads}")
-    private Integer threads;
-    @Value("${dubboConfig.providerConfig.threadpool}")
-    private String threadpool;
-    @Value("${dubboConfig.providerConfig.timeout}")
-    private Integer timeout;
-    @Value("${dubboConfig.providerConfig.providerVersion}")
-    private String providerVersion;
-    @Value("${dubboConfig.providerConfig.filter}")
-    private String filter;
-    @Value("${dubboConfig.providerConfig.retries}")
-    private Integer retries;
+    @Autowired
+    private ProviderConfigProperties providerConfigProperties;
 
-    //  consumer 配置
-    @Value("${dubboConfig.consumerConfig.loadbalance}")
-    private String loadbalance;
-    @Value("${dubboConfig.consumerConfig.cluster}")
-    private String cluster;
-    @Value("${dubboConfig.consumerConfig.consumerVersion}")
-    private String consumerVersion;
-    // 服务降级 如果配置后，异常无法捕获
-    //@Value("${dubboConfig.consumerConfig.mock}")
-    //private String mock;
+    @Autowired
+    private ConsumerConfigProperties configurationProperties;
 
+    @Autowired
+    private ProtocolConfigProperties protocolConfigProperties;
 
-    //  协议配置
-    @Value("${dubboConfig.protocolConfig.protocolName}")
-    private String  protocolName;
-    @Value("${dubboConfig.protocolConfig.port}")
-    private Integer port;
 
     /**
      * 应用配置
@@ -73,10 +47,10 @@ public class DubboConfiguration {
     @Bean
     public ApplicationConfig applicationConfig() {
         ApplicationConfig applicationConfig = new ApplicationConfig();
-        applicationConfig.setName(appName);
-        applicationConfig.setLogger("slf4j");
-        applicationConfig.setOwner(owner);
-        applicationConfig.setOrganization(organization);
+        applicationConfig.setName(applicationConfigProperties.getName());
+        applicationConfig.setLogger(applicationConfigProperties.getLogger());
+        applicationConfig.setOwner(applicationConfigProperties.getOwner());
+        applicationConfig.setOrganization(applicationConfigProperties.getOrganization());
         return applicationConfig;
     }
 
@@ -87,12 +61,11 @@ public class DubboConfiguration {
     @Bean
     public RegistryConfig registryConfig() {
         RegistryConfig registryConfig = new RegistryConfig();
-        registryConfig.setProtocol("zookeeper");
-        registryConfig.setAddress(zk);
-        registryConfig.setClient("curator");
+        registryConfig.setProtocol(registryConfigProperties.getProtocol());
+        registryConfig.setAddress(registryConfigProperties.getAddress());
+        registryConfig.setClient(registryConfigProperties.getClient());
         return registryConfig;
     }
-
 
 
     /**
@@ -102,22 +75,23 @@ public class DubboConfiguration {
     @Bean
     public ProviderConfig providerConfig(){
         ProviderConfig providerConfig = new ProviderConfig();
-        // 使用netty4
-        providerConfig.setServer(server);
+
+       // providerConfig.setServer(server);
         // 固定线程数300个 ，快速响应
-        providerConfig.setThreads(threads);
-        providerConfig.setThreadpool(threadpool);
+        providerConfig.setThreads(providerConfigProperties.getThreads());
+        providerConfig.setThreadpool(providerConfigProperties.getThreadpool());
 
         // 四秒超时
-        providerConfig.setTimeout(timeout);
+        providerConfig.setTimeout(providerConfigProperties.getTimeout());
         // 版本号
-        providerConfig.setVersion(providerVersion);
+        providerConfig.setVersion(providerConfigProperties.getVersion());
 
         // 设置dbid到YoushagnContext
-        providerConfig.setFilter(filter);
-
+        if(providerConfigProperties.getFilter() != null){
+            providerConfig.setFilter(providerConfigProperties.getFilter());
+        }
         // 设置重试次数1，不用考虑密等,并且重试此时由服务方控制,消费段不用配置
-        providerConfig.setRetries(retries);
+        providerConfig.setRetries(providerConfigProperties.getRetries());
 
         return providerConfig;
     }
@@ -130,15 +104,15 @@ public class DubboConfiguration {
     public ConsumerConfig consumerConfig() {
         ConsumerConfig consumerConfig = new ConsumerConfig();
         // 负载均衡扩展
-        consumerConfig.setLoadbalance(loadbalance);
+        consumerConfig.setLoadbalance(configurationProperties.getLoadbalance());
         // 集群扩展
-        consumerConfig.setCluster(cluster);
+        consumerConfig.setCluster(configurationProperties.getCluster());
 
         // 版本号
-        consumerConfig.setVersion(consumerVersion);
+        consumerConfig.setVersion(configurationProperties.getVersion());
 
         // 服务降级，配置后会导致非业务逻辑异常吞掉，调用者自己扩展
-         //consumerConfig.setMock(mock);
+        // consumerConfig.setMock(mock);
         return consumerConfig;
     }
 
@@ -149,8 +123,8 @@ public class DubboConfiguration {
     @Bean
     public ProtocolConfig protocolConfig() {
         ProtocolConfig protocol = new ProtocolConfig();
-        protocol.setName(protocolName);
-        protocol.setPort(port);
+        protocol.setName(protocolConfigProperties.getName());
+        protocol.setPort(protocolConfigProperties.getPort());
         return protocol;
     }
 

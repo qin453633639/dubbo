@@ -55,8 +55,7 @@ public class DubboConfiguration {
     @Bean
     public ProviderConfig providerConfig(){
         ProviderConfig providerConfig = new ProviderConfig();
-        // 使用netty4
-        providerConfig.setServer("netty");
+
         // 固定线程数300个 ，快速响应
         providerConfig.setThreads(200);
         providerConfig.setThreadpool("fixed");
@@ -83,9 +82,9 @@ public class DubboConfiguration {
     public ConsumerConfig consumerConfig() {
         ConsumerConfig consumerConfig = new ConsumerConfig();
         // 负载均衡扩展
-        //consumerConfig.setLoadbalance("sqliteslot");
+        consumerConfig.setLoadbalance("sqliteslot");
         // 集群扩展
-        //consumerConfig.setCluster("sqliteFailfastCluster");
+        consumerConfig.setCluster("sqliteFailfastCluster");
 
         // 版本号
         consumerConfig.setVersion("1.0");

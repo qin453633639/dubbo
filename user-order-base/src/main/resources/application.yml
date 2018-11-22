@@ -8,27 +8,32 @@ spring:
 
 dubboConfig:
   applicationConfig:
-    appName: @appName@
-    owner: @owner@
-    organization: @organization@
+    name: @applicationConfig.name@
+    logger: @applicationConfig.logger@
+    owner: @applicationConfig.owner@
+    organization: @applicationConfig.organization@
   registryConfig:
-    zk: @zk@
+    protocol: @registryConfig.protocol@
+    address: @registryConfig.address@
+    client: @registryConfig.client@
+
   providerConfig:
-    server: @server@
-    threads: @threads@
-    threadpool: @threadpool@
-    timeout: @timeout@
-    providerVersion: @providerVersion@
-    filter: @filter@
-    retries: @retries@
+
+    threads: @providerConfig.threads@
+    threadpool: @providerConfig.threadpool@
+    timeout: @providerConfig.timeout@
+    version: @providerConfig.version@
+    filter: @providerConfig.filter@
+    retries: @providerConfig.retries@
+
   consumerConfig:
-    loadbalance: @loadbalance@
-    cluster: @cluster@
-    consumerVersion: @consumerVersion@
+    loadbalance: @consumerConfig.loadbalance@
+    cluster: @consumerConfig.cluster@
+    version: @consumerConfig.version@
     #mock: @mock@
   protocolConfig:
-    protocolName: @protocolName@
-    port: @port@
+    name: @protocolConfig.name@
+    port: @protocolConfig.port@
 
 
 druid:

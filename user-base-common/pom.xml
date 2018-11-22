@@ -13,6 +13,7 @@
     <groupId>com.qhbd</groupId>
     <artifactId>user-base-common</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
     <name>user-base-common</name>
     <url>http://www.example.com</url>
 

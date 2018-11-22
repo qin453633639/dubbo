@@ -32,13 +32,13 @@
 
         <dependency>
             <groupId>com.qhbd</groupId>
-            <artifactId>user-order-facade</artifactId>
+            <artifactId>user-base-common</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>com.qhbd</groupId>
-            <artifactId>user-base-common</artifactId>
+            <artifactId>user-order-facade</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
@@ -49,13 +49,6 @@
         </dependency>
 
 
-        <!-- 对全栈 web 开发的支持， 包括 Tomcat 和 spring-webmvc
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        -->
-
         <!-- springboot-dubbo -->
         <dependency>
             <groupId>com.alibaba.boot</groupId>
@@ -65,22 +58,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>dubbo</artifactId>
-            <exclusions>
-                <!-- 使用netty4.x 通信，不用netty3.x-->
-                <exclusion>
-                    <groupId>org.jboss.netty</groupId>
-                    <artifactId>netty</artifactId>
-                </exclusion>
-
-            </exclusions>
         </dependency>
-
-        <!--netty-->
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-        </dependency>
-
 
         <!-- springboot-aop -->
         <dependency>
@@ -101,16 +79,15 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- springboot 对durid支持
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
-            <version>1.1.9</version>
-        </dependency>
-        -->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
+        </dependency>
+
+        <!-- org.slf4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
         </dependency>
 
         <!-- log4j 桥接到slf4j -->
@@ -171,15 +148,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- springboot 热部署，idea需要设置make project automatically   与 compiler.automake.allow.when.app.running -->
-        <!-- eclipse需要配置插件-->
-        <!--
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <optional>true</optional>
-        </dependency>
-        -->
     </dependencies>
 
 
@@ -229,8 +197,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>

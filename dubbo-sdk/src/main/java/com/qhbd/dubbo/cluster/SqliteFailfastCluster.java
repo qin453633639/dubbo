@@ -6,7 +6,7 @@ import com.alibaba.dubbo.rpc.cluster.Cluster;
 import com.alibaba.dubbo.rpc.cluster.Directory;
 
 /**
- * @Description:   针对sqlite槽选主机时的bug，如果提供这只有一个，
+ * @Description:   针对sqlite槽选主机时的问题，如果提供这只有一个，
  *                    默认的逻辑不会去根据dbid选在invoker
  * @Author:         qinwei
  * @CreateDate:     2018/10/11 0011 下午 6:58

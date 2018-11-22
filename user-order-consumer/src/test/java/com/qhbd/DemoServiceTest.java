@@ -30,7 +30,7 @@ public class DemoServiceTest extends  BaseTest {
     public void testSelectByPrimaryKey(){
         User u = new User();
         u.setUserId(41);
-        ResultVo<User> data = demoService.selectByPrimaryKey( new CommonParam<User>(u));
+        ResultVo<User> data = demoService.selectByPrimaryKey( new CommonParam<User>(500L,u));
         System.out.println(data);
     }
 

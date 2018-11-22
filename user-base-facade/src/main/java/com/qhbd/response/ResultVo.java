@@ -51,7 +51,7 @@ public class ResultVo<T> implements Serializable {
 
     public ResultVo(StatusResult statusResult, String msg,  T data){
         this.code= statusResult.getCode();
-        this.msg=  msg;
+        this.msg=  msg == null? statusResult.getMsg()  : msg;
         this.data=data;
     }
 

@@ -34,19 +34,19 @@ public class GlobalExceptionHandlerFilter implements Filter {
             if(exception instanceof KDException){
                 // 手动抛出的异常
                 StatusResult statusResult   =  ((KDException) exception).getStatusResult();
-                resultVo = new ResultVo(statusResult);
+                resultVo = new ResultVo(statusResult,exception);
             }else{
                 // 未知异常，直接提示服务器错误
-                resultVo = new ResultVo(ResultMsg.FAIL);
+                resultVo = new ResultVo(ResultMsg.FAIL,exception);
             }
             logger.error("GlobalExceptionHandlerFilter.invoke", exception);
             return new  RpcResult(resultVo);
         }catch (KDException e){
             logger.error("GlobalExceptionHandlerFilter.invoke", e);
-            return new  RpcResult( new ResultVo(  e.getStatusResult() ));
+            return new  RpcResult( new ResultVo(  e.getStatusResult(),e ));
         } catch (Throwable e) {
             logger.error("GlobalExceptionHandlerFilter.invoke", e);
-            return new  RpcResult( new ResultVo(ResultMsg.FAIL));
+            return new  RpcResult( new ResultVo(ResultMsg.FAIL,e));
         }
 
     }

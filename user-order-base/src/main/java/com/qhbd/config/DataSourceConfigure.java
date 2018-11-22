@@ -1,24 +1,24 @@
 package com.qhbd.config;
 
- import com.qhbd.datasource.MultipleDataSource;
- import com.qhbd.datasource.enums.DBType;
- import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.jdbc.DataSourceBuilder;
+import com.alibaba.druid.pool.DruidDataSource;
+import com.qhbd.datasource.MultipleDataSource;
+import com.qhbd.datasource.enums.DBType;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import javax.sql.DataSource;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @Description:   数据源配置
- * @Author:         qinwei
- * @CreateDate:     2018/9/3 0003 下午 4:02
- * @Version:        1.0
-*/
+ * @Description: 数据源配置
+ * @Author: qinwei
+ * @CreateDate: 2018/9/3 0003 下午 4:02
+ * @Version: 1.0
+ */
 @Configuration
 public class DataSourceConfigure {
 
@@ -26,15 +26,39 @@ public class DataSourceConfigure {
     private Class<? extends DataSource> dataSourceType;
 
     @Bean(name = "master")
-    @ConfigurationProperties(prefix = "druid.origin.master")
     public DataSource masterDataSource() {
-        return DataSourceBuilder.create().type(dataSourceType).build();
+        DruidDataSource dataSource = new DruidDataSource();
+        dataSource.setUrl("jdbc:mysql://119.23.36.49:3306/test?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true");
+        dataSource.setUsername("root");
+        dataSource.setPassword("qinwei");
+        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource.setInitialSize(1);
+        dataSource.setMaxActive(10);
+
+        try {
+            dataSource.setFilters("stat");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return dataSource;
+
     }
 
     @Bean(name = "slave")
-    @ConfigurationProperties(prefix = "druid.origin.slave")
     public DataSource slaveDataSource1() {
-        return DataSourceBuilder.create().type(dataSourceType).build();
+        DruidDataSource dataSource = new DruidDataSource();
+        dataSource.setUrl("jdbc:mysql://119.23.36.49:3306/test?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true");
+        dataSource.setUsername("root");
+        dataSource.setPassword("qinwei");
+        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource.setInitialSize(1);
+        dataSource.setMaxActive(10);
+        try {
+            dataSource.setFilters("stat");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return dataSource;
     }
 
     @Bean(name = "dataSource")
