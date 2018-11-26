@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-@ConfigurationProperties(prefix = "dubboConfig.registryConfig")
+@ConfigurationProperties(prefix = "dubboconfig.registryconfig")
 public class RegistryConfigProperties {
     private String protocol;
 

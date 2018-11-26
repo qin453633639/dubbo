@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-@ConfigurationProperties(prefix = "dubboConfig.providerConfig")
+@ConfigurationProperties(prefix = "dubboconfig.providerconfig")
 public class ProviderConfigProperties {
 
     private Integer threads;

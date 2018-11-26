@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 */
 
 @Component
-@ConfigurationProperties(prefix = "dubboConfig.applicationConfig")
+@ConfigurationProperties(prefix = "dubboconfig.applicationconfig")
 public class ApplicationConfigProperties {
 
     private String name;

@@ -1,6 +1,7 @@
 package com.qhbd;
 
 import com.alibaba.dubbo.config.spring.context.annotation.DubboComponentScan;
+import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -10,8 +11,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
-//@EnableTransactionManagement
-//#@MapperScan("com.qhbd.mapper")
+@EnableTransactionManagement
+@MapperScan("com.qhbd.mapper")
 @DubboComponentScan(basePackages = "com.qhbd.service.impl")
 public class UserOrderDemoApplication {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserOrderDemoApplication.class);

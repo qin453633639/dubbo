@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-@ConfigurationProperties(prefix = "dubboConfig.consumerConfig")
+@ConfigurationProperties(prefix = "dubboconfig.consumerconfig")
 public class ConsumerConfigProperties {
 
     private String loadbalance;
