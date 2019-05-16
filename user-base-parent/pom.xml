@@ -35,6 +35,7 @@
         <netty.version>4.1.25.Final</netty.version>
         <slf4j.version>1.7.25</slf4j.version>
         <dubbo.version>2.6.2</dubbo.version>
+        <ehcache.version>3.7.0</ehcache.version>
     </properties>
     <distributionManagement>
         <repository>
@@ -167,6 +168,13 @@
                 <artifactId>aspectjweaver</artifactId>
                 <version>${org.aspectj.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.ehcache</groupId>
+                <artifactId>ehcache</artifactId>
+                <version>${ehcache.version}</version>
+            </dependency>
+
 
             <!-- junit -->
             <dependency>

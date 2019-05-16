@@ -2,12 +2,16 @@ package com.qhbd.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
+import com.qhbd.datasource.annotation.Slave;
 import com.qhbd.entity.User;
 import com.qhbd.mapper.UserMapper;
 import com.qhbd.param.CommonParam;
 import com.qhbd.response.ResultVo;
 import com.qhbd.service.UserService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
+
+import javax.cache.annotation.CacheResult;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +26,8 @@ import java.util.List;
 @Service
 public class UserServileImpl extends  BaseServiceImpl<UserMapper, User>  implements UserService {
 
+
+
     @Override
     public ResultVo<List<Long>>   findOrderIdsByUserId(CommonParam<Long> entity) {
         this.logger.debug("UserServileImpl.findOrderIdsByUserId param {}", JSON.toJSONString(entity));
@@ -29,10 +35,19 @@ public class UserServileImpl extends  BaseServiceImpl<UserMapper, User>  impleme
         for(long i=0;i<10;i++){
             list.add(i);
         }
-        if(list.size() == 10){
-            throw new RuntimeException("aaaa");
-        }
         this.logger.debug("UserServileImpl.findOrderIdsByUserId response {}", JSON.toJSONString(list));
         return ResultVo.success(list);
+    }
+
+    @Override
+    //@CacheResult(cacheName = "default")
+    @Cacheable(value = "default")
+    @Slave
+    public ResultVo<User> findByUserId(CommonParam<Long> id){
+        this.logger.debug("UserServileImpl.findByUserId param {}", JSON.toJSONString(id));
+        User u = new User();
+        u.setUserId(id.getData().intValue());
+        return ResultVo.success(this.mapper.selectByPrimaryKey(u)) ;
+
     }
 }

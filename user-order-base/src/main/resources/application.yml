@@ -44,9 +44,9 @@ druid:
       filters: stat
       driver-class-name: com.mysql.jdbc.Driver
       #基本属性
-      url: jdbc:mysql://192.168.0.12:3306/test?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+      url: jdbc:mysql://193.112.181.252:3306/my?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
       username: root
-      password: 12
+      password: 123
       #配置初始化大小/最小/最大
       initial-size: 1
       min-idle: 2
@@ -69,9 +69,9 @@ druid:
       filters: stat
       driver-class-name: com.mysql.jdbc.Driver
       #基本属性
-      url: jdbc:mysql://192.168.0.12:3306/test?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+      url: jdbc:mysql://193.112.181.252:3306/my?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
       username: root
-      password: 12
+      password: 123
       #配置初始化大小/最小/最大
       initial-size: 1
       min-idle: 2

@@ -19,8 +19,9 @@ public class UserServiceTest extends  BaseTest {
     @Test
     public void testSelectByPrimaryKey(){
         User u = new User();
-        u.setUserId(31);
+        u.setUserId(1);
         ResultVo<User> data = userService.selectByPrimaryKey(new CommonParam<User>(u));
+         data = userService.selectByPrimaryKey(new CommonParam<User>(u));
         System.out.println(data.getData());
 
     }
@@ -35,6 +36,14 @@ public class UserServiceTest extends  BaseTest {
 
     }
 
+    @Test
+    public void testFindOrderIdsByUserId(){
+        CommonParam param = new CommonParam<Long>(1l);
+        System.out.println(userService.findByUserId(param));
+        System.out.println("----------------------------------------");
+        System.out.println(userService.findByUserId(param));
+
+    }
 
 
 
