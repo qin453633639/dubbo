@@ -27,6 +27,9 @@ import java.util.List;
 public class UserServileImpl extends  BaseServiceImpl<UserMapper, User>  implements UserService {
 
 
+    public UserServileImpl() {
+        System.out.println(1);
+    }
 
     @Override
     public ResultVo<List<Long>>   findOrderIdsByUserId(CommonParam<Long> entity) {
