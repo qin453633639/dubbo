@@ -28,7 +28,6 @@ public class UserServileImpl extends  BaseServiceImpl<UserMapper, User>  impleme
 
 
     public UserServileImpl() {
-        System.out.println(1);
     }
 
     @Override
@@ -44,7 +43,7 @@ public class UserServileImpl extends  BaseServiceImpl<UserMapper, User>  impleme
 
     @Override
     //@CacheResult(cacheName = "default")
-    @Cacheable(value = "default",cacheManager = "jCacheCacheManager")
+    @Cacheable(value = "default")
     @Slave
     public ResultVo<User> findByUserId(CommonParam<Long> id){
         this.logger.debug("UserServileImpl.findByUserId param {}", JSON.toJSONString(id));
@@ -52,5 +51,15 @@ public class UserServileImpl extends  BaseServiceImpl<UserMapper, User>  impleme
         u.setUserId(id.getData().intValue());
         return ResultVo.success(this.mapper.selectByPrimaryKey(u)) ;
 
+    }
+
+    @Override
+    @Cacheable(value = "100" )
+    @Slave
+    public ResultVo<User> findByUserId(String id) {
+        this.logger.debug("UserServileImpl.findByUserId param {}", JSON.toJSONString(id));
+        User u = new User();
+        u.setUserId(Integer.parseInt(id));
+        return ResultVo.success(this.mapper.selectByPrimaryKey(u)) ;
     }
 }

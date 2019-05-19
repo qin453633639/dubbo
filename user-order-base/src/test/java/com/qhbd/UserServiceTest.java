@@ -37,11 +37,11 @@ public class UserServiceTest extends  BaseTest {
     }
 
     @Test
-    public void testFindOrderIdsByUserId(){
-        CommonParam param = new CommonParam<Long>(1l);
-        System.out.println(userService.findByUserId(param));
+    public void testfindByUserId() throws InterruptedException {
+
+        System.out.println(userService.findByUserId("1"));
         System.out.println("----------------------------------------");
-        System.out.println(userService.findByUserId(param));
+        System.out.println(userService.findByUserId("1"));
 
     }
 

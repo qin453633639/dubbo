@@ -6,6 +6,15 @@ spring:
     auto: true
     proxy-target-class: true
 
+  #reids 通过原生的自动化配置去做 RedisAutoConfiguration
+  redis:
+    database: 0
+    host: 193.112.181.252
+    port: 6379
+    timeout: 1000
+    pool:
+      max-active: 100
+      max-idle: 10
 dubboconfig:
   applicationconfig:
     name: @applicationConfig.name@

@@ -1,5 +1,6 @@
 package com.qhbd.config;
 
+import com.qhbd.config.redis.MyRedisCacheManager;
 import org.springframework.cache.Cache;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
@@ -9,9 +10,14 @@ import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.cache.RedisCacheWriter;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import javax.cache.CacheManager;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +31,7 @@ public class CacheConfigure {
      * @return
      */
     @Bean("simpleCacheManager")
-    @Primary
+
     public SimpleCacheManager getSimpleCacheManager(){
         SimpleCacheManager simpleCacheManager = new SimpleCacheManager();
         List< Cache> list = new ArrayList<>();
@@ -33,6 +39,29 @@ public class CacheConfigure {
         simpleCacheManager.setCaches(list);
         return simpleCacheManager;
     }
+
+    /**
+     * redis缓存
+     * @return
+     */
+    @Bean("redisCacheManager")
+    @Primary
+
+    public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
+        RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(connectionFactory);
+        RedisCacheConfiguration defaultCacheConfig = RedisCacheConfiguration.defaultCacheConfig();
+        //设置默认超过期时间是30秒
+        defaultCacheConfig = defaultCacheConfig.entryTtl(Duration.ofSeconds(30));
+        //初始化RedisCacheManager
+        RedisCacheManager cacheManager = new MyRedisCacheManager(redisCacheWriter, defaultCacheConfig);
+        return cacheManager;
+    }
+
+
+
+
+
+
 
     /**
      * ehcache 2.0 实现
@@ -56,6 +85,8 @@ public class CacheConfigure {
     }*/
 
 
+
+
     /**
      * ehcache 3.0 实现 缓存可用@Cacheable 注解 也可用 @CacheResult注解
      *  @Cacheable 是spring的缓存框架注解
@@ -74,7 +105,7 @@ public class CacheConfigure {
     @Bean
     public JCacheManagerFactoryBean createJCacheManagerFactoryBean() throws URISyntaxException {
         JCacheManagerFactoryBean jCacheManagerFactoryBean = new JCacheManagerFactoryBean();
-        jCacheManagerFactoryBean.setCacheManagerUri(new URI("file:/C:/my/idea/yunji/dubbo/user-order-base/target/classes/ehcache.xml") );
+        jCacheManagerFactoryBean.setCacheManagerUri(new URI("file:/D:/idea/project/dubbo/user-order-base/src/main/resources/ehcache.xml") );
         return jCacheManagerFactoryBean;
     }
 

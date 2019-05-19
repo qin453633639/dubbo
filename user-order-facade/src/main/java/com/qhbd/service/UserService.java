@@ -16,4 +16,6 @@ public interface UserService  extends  BaseService<User>{
     ResultVo<List<Long>> findOrderIdsByUserId(CommonParam<Long> entity);
 
     ResultVo<User> findByUserId(CommonParam<Long> userId);
+
+    ResultVo<User> findByUserId(String id);
 }
