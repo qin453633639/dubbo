@@ -3,6 +3,8 @@ package com.qhbd.cache;
 
 import org.junit.Test;
 
+import java.util.Properties;
+
 
 /**
  * 缓存策略，
@@ -12,6 +14,8 @@ public class EhcacheCaseTest {
 
     @Test
     public void aa(){
-
+        Properties a = new Properties();
+        a.put("11","1");
+        System.out.println(a.toString());
     }
 }

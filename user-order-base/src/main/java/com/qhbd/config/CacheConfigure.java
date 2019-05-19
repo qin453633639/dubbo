@@ -8,6 +8,7 @@ import org.springframework.cache.jcache.JCacheManagerFactoryBean;
 import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import javax.cache.CacheManager;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -23,11 +24,12 @@ public class CacheConfigure {
      * 自带的缓存实现
      * @return
      */
-    //@Bean
+    @Bean("simpleCacheManager")
+    @Primary
     public SimpleCacheManager getSimpleCacheManager(){
         SimpleCacheManager simpleCacheManager = new SimpleCacheManager();
         List< Cache> list = new ArrayList<>();
-        list.add(new ConcurrentMapCache("myCache"));
+        list.add(new ConcurrentMapCache("default"));
         simpleCacheManager.setCaches(list);
         return simpleCacheManager;
     }
@@ -62,7 +64,7 @@ public class CacheConfigure {
      * @return
      * @throws URISyntaxException
      */
-    @Bean
+    @Bean("jCacheCacheManager")
     public JCacheCacheManager createJCacheCacheManager(CacheManager cacheManager) throws URISyntaxException {
         JCacheCacheManager jCacheCacheManager = new JCacheCacheManager();
         jCacheCacheManager.setCacheManager(cacheManager);

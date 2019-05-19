@@ -44,7 +44,7 @@ public class UserServileImpl extends  BaseServiceImpl<UserMapper, User>  impleme
 
     @Override
     //@CacheResult(cacheName = "default")
-    @Cacheable(value = "default")
+    @Cacheable(value = "default",cacheManager = "jCacheCacheManager")
     @Slave
     public ResultVo<User> findByUserId(CommonParam<Long> id){
         this.logger.debug("UserServileImpl.findByUserId param {}", JSON.toJSONString(id));
