@@ -1,6 +1,7 @@
 package com.qhbd.config;
 
-import com.qhbd.config.redis.MyRedisCacheManager;
+import com.qhbd.config.redis.LocalRedisCacheManager;
+import com.qhbd.config.redis.RedisExpireCacheManager;
 import org.springframework.cache.Cache;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
@@ -14,6 +15,8 @@ import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.serializer.RedisSerializationContext;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import javax.cache.CacheManager;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -31,7 +34,7 @@ public class CacheConfigure {
      * @return
      */
     @Bean("simpleCacheManager")
-
+    @Primary
     public SimpleCacheManager getSimpleCacheManager(){
         SimpleCacheManager simpleCacheManager = new SimpleCacheManager();
         List< Cache> list = new ArrayList<>();
@@ -41,50 +44,22 @@ public class CacheConfigure {
     }
 
     /**
-     * redis缓存
+     * redis缓存 支持设置key的过期时间
      * @return
      */
     @Bean("redisCacheManager")
-    @Primary
-
     public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
         RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(connectionFactory);
-        RedisCacheConfiguration defaultCacheConfig = RedisCacheConfiguration.defaultCacheConfig();
-        //设置默认超过期时间是30秒
-        defaultCacheConfig = defaultCacheConfig.entryTtl(Duration.ofSeconds(30));
+        RedisCacheConfiguration defaultCacheConfig =
+                RedisCacheConfiguration.defaultCacheConfig()
+                        .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
+                        .entryTtl(Duration.ofSeconds(30))
+                        .disableKeyPrefix();
+
         //初始化RedisCacheManager
-        RedisCacheManager cacheManager = new MyRedisCacheManager(redisCacheWriter, defaultCacheConfig);
+        RedisCacheManager cacheManager = new RedisExpireCacheManager(redisCacheWriter, defaultCacheConfig);
         return cacheManager;
     }
-
-
-
-
-
-
-
-    /**
-     * ehcache 2.0 实现
-     * @param cacheManager
-     * @return
-     * @throws URISyntaxException
-     */
-    /*
-    @Bean(name = "appEhCacheCacheManager")
-    public EhCacheCacheManager ehCacheCacheManager(EhCacheManagerFactoryBean bean){
-        return new EhCacheCacheManager (bean.getObject ());
-    }
-
-
-    @Bean
-    public EhCacheManagerFactoryBean ehCacheManagerFactoryBean(){
-        EhCacheManagerFactoryBean cacheManagerFactoryBean = new EhCacheManagerFactoryBean ();
-        cacheManagerFactoryBean.setConfigLocation (new ClassPathResource("conf/ehcache-app.xml"));
-        cacheManagerFactoryBean.setShared (true);
-        return cacheManagerFactoryBean;
-    }*/
-
-
 
 
     /**
@@ -105,8 +80,24 @@ public class CacheConfigure {
     @Bean
     public JCacheManagerFactoryBean createJCacheManagerFactoryBean() throws URISyntaxException {
         JCacheManagerFactoryBean jCacheManagerFactoryBean = new JCacheManagerFactoryBean();
-        jCacheManagerFactoryBean.setCacheManagerUri(new URI("file:/D:/idea/project/dubbo/user-order-base/src/main/resources/ehcache.xml") );
+        jCacheManagerFactoryBean.setCacheManagerUri(new URI("file:/C:/my/idea/yunji/dubbo/user-order-base/src/main/resources/ehcache.xml") );
         return jCacheManagerFactoryBean;
+    }
+
+
+    /**
+     * ehcache作为一级缓存  redis 作为二级缓存
+     * @return
+     */
+    @Bean("ehAndRedisCacheManager")
+    public RedisCacheManager createEhAndRedisCacheManager(RedisConnectionFactory connectionFactory) {
+        RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(connectionFactory);
+        RedisCacheConfiguration defaultCacheConfig =
+                RedisCacheConfiguration.defaultCacheConfig()
+                        .entryTtl(Duration.ofSeconds(30));
+        //初始化RedisCacheManager
+        RedisCacheManager cacheManager = new LocalRedisCacheManager(redisCacheWriter, defaultCacheConfig);
+        return cacheManager;
     }
 
 }

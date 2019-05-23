@@ -26,6 +26,7 @@ import java.util.List;
 @Service
 public class UserServileImpl extends  BaseServiceImpl<UserMapper, User>  implements UserService {
 
+    public static  final String PREFIX = "OMS";
 
     public UserServileImpl() {
     }
@@ -54,7 +55,7 @@ public class UserServileImpl extends  BaseServiceImpl<UserMapper, User>  impleme
     }
 
     @Override
-    @Cacheable(value = "100" )
+    @Cacheable(value = "default",key = "#root.target.PREFIX +':'+ #id")
     @Slave
     public ResultVo<User> findByUserId(String id) {
         this.logger.debug("UserServileImpl.findByUserId param {}", JSON.toJSONString(id));

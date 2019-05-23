@@ -39,9 +39,9 @@ public class UserServiceTest extends  BaseTest {
     @Test
     public void testfindByUserId() throws InterruptedException {
 
-        System.out.println(userService.findByUserId("1"));
+        System.out.println(userService.findByUserId("100"));
         System.out.println("----------------------------------------");
-        System.out.println(userService.findByUserId("1"));
+        System.out.println(userService.findByUserId("100"));
 
     }
 

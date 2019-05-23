@@ -5,6 +5,7 @@ import org.ehcache.CacheManager;
 import org.ehcache.UserManagedCache;
 import org.ehcache.config.CacheConfiguration;
 import org.ehcache.config.Configuration;
+import org.ehcache.config.EvictionAdvisor;
 import org.ehcache.config.ResourcePools;
 import org.ehcache.config.builders.*;
 import org.ehcache.config.units.EntryUnit;
@@ -19,6 +20,7 @@ import java.net.URL;
 import java.time.Duration;
 
 public class EhcacheTest {
+
 
 
     /**
@@ -76,12 +78,13 @@ public class EhcacheTest {
     @Test
     public void baseDemo() throws InterruptedException {
         ResourcePools resourcePools = ResourcePoolsBuilder.newResourcePoolsBuilder()
-                .heap(10,EntryUnit.ENTRIES) // 堆内存 map
-                .offheap(10, MemoryUnit.MB) // 堆外内存  nio 的buffer
+                .heap(2,EntryUnit.ENTRIES) // 堆内存 map
+                //.offheap(10, MemoryUnit.MB) // 堆外内存  nio 的buffer
                 .disk(20, MemoryUnit.MB, false) // true  (表示CacheManager关闭的时候 不会清楚数据文件 但manager未关闭，也不能持久化)
                 .build();
         CacheConfiguration<String,StringBuilder> cacheConfiguration = CacheConfigurationBuilder.newCacheConfigurationBuilder(String.class, StringBuilder.class,resourcePools)
                 .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofSeconds(5)))
+                .withEvictionAdvisor(new MyOddKeysEvictionAdvisor())
                 .build();
         CacheManager cacheManager = CacheManagerBuilder.newCacheManagerBuilder().withCache("my",cacheConfiguration)
                 .with(CacheManagerBuilder.persistence("D:\\" + File.separator + "myData"))
@@ -90,8 +93,15 @@ public class EhcacheTest {
                 .build(true);
 
         Cache<String, StringBuilder> myCache = cacheManager.getCache("my",String.class,StringBuilder.class);
-        myCache.put("name",new StringBuilder("smartteam"));
-        System.out.println(myCache.get("name"));
+        myCache.put("1",new StringBuilder("smartteam1"));
+        myCache.put("2",new StringBuilder("smartteam2"));
+        myCache.put("3",new StringBuilder("smartteam3"));
+
+
+        System.out.println(myCache.get("1"));
+        System.out.println(myCache.get("2"));
+        System.out.println(myCache.get("3"));
+
         cacheManager.close();
 
 
@@ -132,4 +142,11 @@ public class EhcacheTest {
 
 
 
+}
+
+class MyOddKeysEvictionAdvisor implements EvictionAdvisor{
+    @Override
+    public boolean adviseAgainstEviction(Object key, Object value) {
+        return false;
+    }
 }

@@ -19,6 +19,7 @@
             <heap unit="entries">2000</heap>
             <offheap unit="MB">500</offheap>
         </resources>
+
     </cache>
 
     <!-- 定义一个cache模板 ，模板是抽象定义，可以被cache 实例配置继承  -->
@@ -30,7 +31,7 @@
 
     <!-- 定义一个 default cache  使用 myDefaults 模板 这里 覆盖了模板的key-type 配置 -->
     <cache alias="default" uses-template="myDefaults">
-        <key-type>com.qhbd.param.CommonParam</key-type>
+        <key-type>java.lang.String</key-type>
         <value-type>com.qhbd.response.ResultVo</value-type>
     </cache>
 

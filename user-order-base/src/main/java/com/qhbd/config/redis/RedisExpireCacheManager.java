@@ -12,11 +12,11 @@ import java.time.Duration;
 /**
  * Created by qinwei on 2019/5/20.
  */
-public class MyRedisCacheManager extends RedisCacheManager {
+public class RedisExpireCacheManager extends RedisCacheManager {
 
     private RedisSerializationContext.SerializationPair  key =RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer());
 
-    public MyRedisCacheManager(RedisCacheWriter cacheWriter, RedisCacheConfiguration defaultCacheConfiguration) {
+    public RedisExpireCacheManager(RedisCacheWriter cacheWriter, RedisCacheConfiguration defaultCacheConfiguration) {
         super(cacheWriter, defaultCacheConfiguration, true);
     }
 
