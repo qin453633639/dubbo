@@ -4,9 +4,9 @@ import org.springframework.data.redis.cache.RedisCache;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
+import org.springframework.data.redis.serializer.RedisSerializationContext;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.util.StringUtils;
-
-import java.lang.reflect.Constructor;
 import java.time.Duration;
 
 /**
@@ -14,6 +14,7 @@ import java.time.Duration;
  */
 public class MyRedisCacheManager extends RedisCacheManager {
 
+    private RedisSerializationContext.SerializationPair  key =RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer());
 
     public MyRedisCacheManager(RedisCacheWriter cacheWriter, RedisCacheConfiguration defaultCacheConfiguration) {
         super(cacheWriter, defaultCacheConfiguration, true);
@@ -25,8 +26,10 @@ public class MyRedisCacheManager extends RedisCacheManager {
         if(StringUtils.isEmpty(name)){
             return redisCache;
         }
-
-        return super.createRedisCache(name,RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofSeconds(Integer.parseInt(name))));
+        return super.createRedisCache(name,RedisCacheConfiguration.defaultCacheConfig()
+                .serializeKeysWith(key)
+                .disableKeyPrefix()
+                .entryTtl(Duration.ofSeconds(Integer.parseInt(name))));
 
     }
 }
